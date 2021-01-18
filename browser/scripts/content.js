@@ -144,8 +144,9 @@ class GhostTextField {
 			selections
 		} = JSON.parse(event.data);
 		if (this.field.value !== text) {
-			this.field.value = text;
-		}
+      this.field.value = text;
+      triggerOnChange(this.field, text);
+    }
 
 		this.field.selectionStart = selections[0].start;
 		this.field.selectionEnd = selections[0].end;
@@ -268,6 +269,27 @@ function init() {
 	script.textContent = '(' + window.unsafeMessenger.toString() + ')()';
 	document.head.append(script);
 }
+
+function debounceEvent(callback, time) {
+  let interval;
+  return (...args) => {
+    clearTimeout(interval);
+    interval = setTimeout(() => {
+      interval = null;
+      callback(...args);
+    }, time);
+  };
+}
+
+const triggerOnChange = debounceEvent((input, text) => {
+  const textareaSetter = Object.getOwnPropertyDescriptor(
+    window.HTMLTextAreaElement.prototype,
+    "value"
+  ).set;
+  textareaSetter.call(input, text);
+  const event = new Event("input", { bubbles: true });
+  input.dispatchEvent(event);
+}, 1000);
 
 window.startGT = startGT;
 window.stopGT = stopGT;
