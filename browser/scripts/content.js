@@ -80,6 +80,17 @@ function wrapField(field) {
 	return field;
 }
 
+function debounceEvent(callback, time) {
+  let interval;
+  return (...args) => {
+    clearTimeout(interval);
+    interval = setTimeout(() => {
+      interval = null;
+      callback(...args);
+    }, time);
+  };
+}
+
 class GhostTextField {
 	constructor(field) {
 		this.field = wrapField(field);
@@ -90,6 +101,18 @@ class GhostTextField {
 		this.tryFocus = this.tryFocus.bind(this);
 		field.addEventListener('focus', this.tryFocus);
 		this.state = 'inactive';
+    this.onChangeEvent = false;
+    this.triggerOnChange = debounceEvent((input, text) => {
+      this.onChangeEvent = true;
+      const textareaSetter = Object.getOwnPropertyDescriptor(
+        window.HTMLTextAreaElement.prototype,
+        "value"
+      ).set;
+      textareaSetter.call(input, text);
+      const event = new Event("input", { bubbles: true });
+      input.dispatchEvent(event);
+    }, 1000);
+
 	}
 
 	async activate() {
@@ -123,19 +146,25 @@ class GhostTextField {
 	}
 
 	send() {
-		console.info('sending', this.field.value.length, 'characters');
-		this.port.postMessage(JSON.stringify({
-			title: document.title, // TODO: move to first fetch
-			url: location.host, // TODO: move to first fetch
-			syntax: '', // TODO: move to first fetch
-			text: this.field.value,
-			selections: [
-				{
-					start: this.field.selectionStart || 0,
-					end: this.field.selectionEnd || 0
-				}
-			]
-		}));
+		if (!this.onChangeEvent) { 
+		  console.info('sending', this.field.value.length, 'characters');
+      this.port.postMessage(
+        JSON.stringify({
+          title: document.title, // TODO: move to first fetch
+          url: location.host, // TODO: move to first fetch
+          syntax: "", // TODO: move to first fetch
+          text: this.field.value,
+          selections: [
+            {
+              start: this.field.selectionStart || 0,
+              end: this.field.selectionEnd || 0,
+            },
+          ],
+        })
+			);
+    } else {
+			this.onChangeEvent = false;
+    }
 	}
 
 	receive(event) {
@@ -145,7 +174,7 @@ class GhostTextField {
 		} = JSON.parse(event.data);
 		if (this.field.value !== text) {
       this.field.value = text;
-      triggerOnChange(this.field, text);
+      this.triggerOnChange(this.field, text);
     }
 
 		this.field.selectionStart = selections[0].start;
@@ -269,27 +298,6 @@ function init() {
 	script.textContent = '(' + window.unsafeMessenger.toString() + ')()';
 	document.head.append(script);
 }
-
-function debounceEvent(callback, time) {
-  let interval;
-  return (...args) => {
-    clearTimeout(interval);
-    interval = setTimeout(() => {
-      interval = null;
-      callback(...args);
-    }, time);
-  };
-}
-
-const triggerOnChange = debounceEvent((input, text) => {
-  const textareaSetter = Object.getOwnPropertyDescriptor(
-    window.HTMLTextAreaElement.prototype,
-    "value"
-  ).set;
-  textareaSetter.call(input, text);
-  const event = new Event("input", { bubbles: true });
-  input.dispatchEvent(event);
-}, 1000);
 
 window.startGT = startGT;
 window.stopGT = stopGT;
