@@ -103,6 +103,7 @@ class GhostTextField {
 		this.state = 'inactive';
     this.onChangeEvent = false;
     this.triggerOnChange = debounceEvent((input, text) => {
+			try {
       this.onChangeEvent = true;
       const textareaSetter = Object.getOwnPropertyDescriptor(
         window.HTMLTextAreaElement.prototype,
@@ -111,7 +112,10 @@ class GhostTextField {
       textareaSetter.call(input, text);
       const event = new Event("input", { bubbles: true });
       input.dispatchEvent(event);
-    }, 1000);
+			} catch (e) {
+				this.onChangeEvent = false;
+			}
+    }, 100);
 
 	}
 
@@ -121,6 +125,7 @@ class GhostTextField {
 		}
 
 		this.state = 'active';
+		this.onChangeEvent = false;
 		activeFields.add(this);
 
 		this.field.dataset.gtField = 'loading';
@@ -187,6 +192,7 @@ class GhostTextField {
 		}
 
 		this.state = 'inactive';
+		this.onChangeEvent = false;
 		console.log('Disabling field');
 		activeFields.delete(this);
 		this.port.disconnect();
