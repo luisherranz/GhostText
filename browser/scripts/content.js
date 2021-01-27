@@ -187,7 +187,7 @@ function updateCount() {
 	});
 
 	if (activeFields.size === 0) {
-		notify('log', 'Disconnected! \n <a href="https://github.com/GhostText/GhostText/issues" target="_blank">Report issues</a>');
+		notify('log', 'Disconnected!');
 	}
 }
 
