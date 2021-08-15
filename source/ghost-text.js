@@ -1,5 +1,6 @@
 import GThumane from './humane-ghosttext.js';
 import unsafeMessenger from './unsafe-messenger.js';
+import transformations from './transformations.js';
 
 const knownElements = new Map();
 const activeFields = new Set();
@@ -87,6 +88,15 @@ function wrapField(field) {
 	return field;
 }
 
+function transform(text, url, sendOrReceive) {
+	Object.keys(transformations).forEach((key) => {
+		if (new RegExp(key).test(url)) {
+			text = transformations[key][sendOrReceive](text);
+		}
+	});
+	return text;
+}
+
 class GhostTextField {
 	constructor(field) {
 		this.field = wrapField(field);
@@ -97,6 +107,7 @@ class GhostTextField {
 		this.tryFocus = this.tryFocus.bind(this);
 		field.addEventListener('focus', this.tryFocus);
 		this.state = 'inactive';
+		this.url = window.location.href;
 	}
 
 	async activate() {
@@ -143,7 +154,7 @@ class GhostTextField {
 				title: document.title, // TODO: move to first fetch
 				url: location.host, // TODO: move to first fetch
 				syntax: '', // TODO: move to first fetch
-				text: this.field.value,
+				text: transform(this.field.value, this.url, 'send'),
 				selections: [
 					{
 						start: this.field.selectionStart || 0,
@@ -155,7 +166,9 @@ class GhostTextField {
 	}
 
 	receive(event) {
-		const {text, selections} = JSON.parse(event.data);
+		let {text, selections} = JSON.parse(event.data);
+
+		text = transform(text, this.url, 'receive');
 
 		if (this.field.value !== text) {
 			this.field.value = text;
