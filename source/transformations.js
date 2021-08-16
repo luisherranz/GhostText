@@ -64,4 +64,8 @@ export default {
 			// Replace bold.
 			text.replace(/\*\*/g, "*"),
 	},
+	"docs\\.google\\.com": {
+		send: (text) => htmlToMarkdown(text),
+		receive: (text) => markdownToHtml(text),
+	},
 };
