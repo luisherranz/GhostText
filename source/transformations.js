@@ -59,10 +59,13 @@ export default {
 				.replace(/\b\*/g, "**")
 				.replace(/\*\b/g, "**")
 				// Replace mention.
-				.replace(/<\/?ts-mention.*?>/g, ""),
+				.replace(/<\/?ts-mention.*?>/g, "")
+				// Replace quotes.
+				.replace(/&gt;/g, ">"),
 		receive: (text) =>
-			// Replace bold.
-			text.replace(/\*\*/g, "*"),
+			text
+				// Replace bold.
+				.replace(/\*\*/g, "*"),
 	},
 	"docs\\.google\\.com": {
 		send: (text) => htmlToMarkdown(text),
