@@ -5,6 +5,7 @@ import remarkStringify from "remark-stringify";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
+import striptags from "striptags";
 
 function htmlToMarkdown(text) {
 	unified()
@@ -42,6 +43,10 @@ export default {
 			return htmlToMarkdown(text);
 		},
 		receive: (text) => markdownToHtml(text),
+	},
+	"stackedit\\.io": {
+		send: (text) => striptags(text),
+		receive: (text) => text,
 	},
 	"app\\.slack\\.com": {
 		send: (text) =>
