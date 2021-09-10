@@ -36,13 +36,24 @@ function markdownToHtml(text) {
 
 export default {
 	"mail\\.google\\.com": {
-		send: (text) => {
+		send: (html) => {
 			// Remove the initial empty line.
-			text = text.replace(/^<p><br><\/p>$/, "").replace(/^<br>$/, "");
+			html = html.replace(/^<p><br><\/p>$/, "").replace(/^<br>$/, "");
 
-			return htmlToMarkdown(text);
+			return htmlToMarkdown(html);
 		},
-		receive: (text) => markdownToHtml(text),
+		receive: (md) => {
+			const html = markdownToHtml(md);
+
+			return (
+				html
+					// Add blockquote style.
+					.replace(
+						/<blockquote/g,
+						'<blockquote style="margin: 0px 0px 0px 0.8ex; border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;"'
+					)
+			);
+		},
 	},
 	"stackedit\\.io": {
 		send: (text) => striptags(text),
