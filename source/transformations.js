@@ -35,6 +35,7 @@ function markdownToHtml(text) {
 }
 
 export default {
+	// Gmail.
 	"mail\\.google\\.com": {
 		send: (html) => {
 			// Remove the initial empty line.
@@ -55,10 +56,28 @@ export default {
 			);
 		},
 	},
+
+	// StackEdit.io
 	"stackedit\\.io": {
 		send: (text) => striptags(text),
 		receive: (text) => text,
 	},
+
+	// WordPress.com (Gutenberg).
+	"[a-z-]+\\.wordpress.com": {
+		send: (html) => {
+			return (
+				htmlToMarkdown(html)
+					// Reset empty block.
+					.replace(/^.\n$/, "")
+			);
+		},
+		receive: (md) => {
+			return markdownToHtml(md);
+		},
+	},
+
+	// Slack.
 	"app\\.slack\\.com": {
 		send: (text) =>
 			text
@@ -83,6 +102,8 @@ export default {
 				// Replace bold.
 				.replace(/\*\*/g, "*"),
 	},
+
+	// Google Docs.
 	"docs\\.google\\.com": {
 		send: (text) => htmlToMarkdown(text),
 		receive: (text) => markdownToHtml(text),
