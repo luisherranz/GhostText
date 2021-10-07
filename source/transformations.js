@@ -35,8 +35,8 @@ function markdownToHtml(text) {
 }
 
 export default {
-	// Gmail.
-	"mail\\.google\\.com": {
+	// Gmail and Google Calendar.
+	"(mail|calendar)\\.google\\.com": {
 		send: (html) => {
 			// Remove the initial empty line.
 			html = html.replace(/^<p><br><\/p>$/, "").replace(/^<br>$/, "");
@@ -64,18 +64,18 @@ export default {
 	},
 
 	// WordPress.com (Gutenberg).
-	"[a-z-]+\\.wordpress.com": {
-		send: (html) => {
-			return (
-				htmlToMarkdown(html)
-					// Reset empty block.
-					.replace(/^.\n$/, "")
-			);
-		},
-		receive: (md) => {
-			return markdownToHtml(md);
-		},
-	},
+	// "(?!systemsrequests)\\.wordpress.com": {
+	// 	send: (html) => {
+	// 		return (
+	// 			htmlToMarkdown(html)
+	// 				// Reset empty block.
+	// 				.replace(/^.\n$/, "")
+	// 		);
+	// 	},
+	// 	receive: (md) => {
+	// 		return md;
+	// 	},
+	// },
 
 	// Slack.
 	"app\\.slack\\.com": {
