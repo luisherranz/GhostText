@@ -35,8 +35,8 @@ function markdownToHtml(text) {
 }
 
 export default {
-	// Gmail.
-	"mail\\.google\\.com": {
+	// Gmail and Google Calendar.
+	"(mail|calendar)\\.google\\.com": {
 		send: (html) => {
 			// Remove the initial empty line.
 			html = html.replace(/^<p><br><\/p>$/, "").replace(/^<br>$/, "");
