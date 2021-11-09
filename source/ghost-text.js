@@ -133,6 +133,7 @@ class GhostTextField {
 
 				this.field.addEventListener('input', this.send);
 				this.field.dataset.gtField = 'enabled';
+				this.field.scrollIntoView({block: "nearest"});
 
 				// Send first value to init tab
 				this.send();
