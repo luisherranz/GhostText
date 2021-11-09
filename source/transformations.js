@@ -108,4 +108,18 @@ export default {
 		send: (text) => htmlToMarkdown(text),
 		receive: (text) => markdownToHtml(text),
 	},
+
+	// Notion.
+	"notion\\.so": {
+		send: (text) => {
+			return (
+				text
+					// Remove span in emojis.
+					.replace(/<span role="image".*?>(.*)<\/span>/, "$1")
+			);
+		},
+		receive: (text) => {
+			return text;
+		},
+	},
 };
