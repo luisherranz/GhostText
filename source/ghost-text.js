@@ -16,6 +16,7 @@ class ContentEditableWrapper {
 		this.addEventListener = element.addEventListener.bind(element);
 		this.removeEventListener = element.removeEventListener.bind(element);
 		this.dispatchEvent = element.dispatchEvent.bind(element);
+		this.scrollIntoView = element.scrollIntoView.bind(element);
 		this.blur = element.blur.bind(element);
 	}
 
