@@ -96,11 +96,21 @@ export default {
 				// Replace mention.
 				.replace(/<\/?ts-mention.*?>/g, "")
 				// Replace quotes.
-				.replace(/&gt;/g, ">"),
+				.replace(/&gt;/g, ">")
+				// Replace * with -.
+				.replace(/(^[ ]*)\*/gm, "$1-")
+				// Replace 4 spaces with 2.
+				.replace(/    /g, "  ")
+				// Remove final line breaks.
+				.replace(/\n([\n]*)$/m, ""),
 		receive: (text) =>
 			text
 				// Replace bold.
-				.replace(/\*\*/g, "*"),
+				.replace(/\*\*/g, "*")
+				// Add 4 spaces instead of 2.
+				.replace(/  /g, "    ")
+				// Remove final line breaks.
+				.replace(/\n([\n]*)$/m, ""),
 	},
 
 	// Google Docs.
