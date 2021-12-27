@@ -102,7 +102,7 @@ export default {
 				// Replace 4 spaces with 2.
 				.replace(/    /g, "  ")
 				// Remove final line breaks.
-				.replace(/\n([\n]*)$/m, ""),
+				.replace(/\n([\n]*)$/, ""),
 		receive: (text) =>
 			text
 				// Replace bold.
@@ -110,7 +110,7 @@ export default {
 				// Add 4 spaces instead of 2.
 				.replace(/  /g, "    ")
 				// Remove final line breaks.
-				.replace(/\n([\n]*)$/m, ""),
+				.replace(/\n([\n]*)$/, ""),
 	},
 
 	// Google Docs.
