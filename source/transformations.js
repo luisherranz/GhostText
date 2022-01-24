@@ -64,18 +64,18 @@ export default {
 	},
 
 	// WordPress.com (Gutenberg).
-	// "(?!systemsrequests)\\.wordpress.com": {
-	// 	send: (html) => {
-	// 		return (
-	// 			htmlToMarkdown(html)
-	// 				// Reset empty block.
-	// 				.replace(/^.\n$/, "")
-	// 		);
-	// 	},
-	// 	receive: (md) => {
-	// 		return md;
-	// 	},
-	// },
+	"wordpress\\.com": {
+		send: (md) => {
+			return (
+				md
+					// Fix markdown quotes.
+					.replace(/&gt;/g, ">")
+			);
+		},
+		receive: (md) => {
+			return md;
+		},
+	},
 
 	// Slack.
 	"app\\.slack\\.com": {
