@@ -124,7 +124,7 @@ class GhostTextField {
 				this.field.addEventListener('input', this.send);
 				this.field.dataset.gtField = 'enabled';
 				setTimeout(() => {
-					this.field.scrollIntoView({ block: "nearest" });
+					this.field.scrollIntoView({ block: "center" });
 				}, 500)
 				// Send first value to init tab
 				this.send();
@@ -198,6 +198,9 @@ class GhostTextField {
 		this.port.disconnect();
 		this.field.removeEventListener('input', this.send);
 		this.field.dataset.gtField = '';
+		setTimeout(() => {
+			this.field.scrollIntoView({ block: "center" });
+		}, 500)
 
 		chrome.runtime.sendMessage({
 			code: 'focus-tab'
