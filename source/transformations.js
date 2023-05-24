@@ -91,14 +91,13 @@ export default {
 				// Replace emojis.
 				.replace(/<img.*?data-id="(:[\w]*:)".*?>/g, "$1")
 				// Replace bold.
-				.replace(/\b\*/g, "**")
-				.replace(/\*\b/g, "**")
+				.replace(/\*(.*?)\*/g, "**$1**")
 				// Replace mention.
 				.replace(/<\/?ts-mention.*?>/g, "")
 				// Replace quotes.
 				.replace(/&gt;/g, ">")
 				// Replace * with -.
-				.replace(/(^[ ]*)\*/gm, "$1-")
+				.replace(/(^[ ]*)\* /gm, "$1-")
 				// Replace 4 spaces with 2.
 				.replace(/    /g, "  ")
 				// Remove final line breaks.
