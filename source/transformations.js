@@ -97,7 +97,7 @@ export default {
 				// Replace quotes.
 				.replace(/&gt;/g, ">")
 				// Replace * with -.
-				.replace(/(^[ ]*)\* /gm, "$1-")
+				.replace(/(^[ ]*)\* /gm, "$1- ")
 				// Replace 4 spaces with 2.
 				.replace(/    /g, "  ")
 				// Remove final line breaks.
