@@ -36,7 +36,7 @@ function markdownToHtml(text) {
 
 export default {
 	"keep\\.google\\.com": {
-		send: (html) => html.replace(/<br>/g, "\n"),
+		send: (html) => html.replace(/<br>/g, "\n").replace(/&gt;/g, ">"),
 		receive: (md) => md,
 	},
 	// Gmail and Google Calendar.
