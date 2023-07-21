@@ -35,6 +35,10 @@ function markdownToHtml(text) {
 }
 
 export default {
+	"claude\\.ai": {
+		send: (html) => htmlToMarkdown(html),
+		receive: (md) => markdownToHtml(md),
+	},
 	"keep\\.google\\.com": {
 		send: (html) =>
 			html.replace(/<br>/g, "\n").replace(/&gt;/g, ">").replace(/&lt;/g, "<"),
