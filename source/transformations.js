@@ -98,7 +98,7 @@ export default {
 				// Remove the initial <p> tags.
 				.replace(/<p>/g, "")
 				// Replace emojis.
-				.replace(/<img.*?data-id="(:[\w]*:)".*?>/g, "$1")
+				.replace(/<img.*?data-id="(:[\w-]*:)".*?>/g, "$1")
 				// Replace bold.
 				.replace(/\*(.*?)\*/g, "**$1**")
 				// Replace mention.
