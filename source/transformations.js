@@ -35,6 +35,10 @@ function markdownToHtml(text) {
 }
 
 export default {
+	".*": {
+		send: (md) => md,
+		receive: (md) => md.replace(/[\u00A0]/, " "),
+	},
 	"claude\\.ai": {
 		send: (html) => htmlToMarkdown(html),
 		receive: (md) => markdownToHtml(md),
