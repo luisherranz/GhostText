@@ -44,9 +44,15 @@ export default {
 		receive: (md) => markdownToHtml(md),
 	},
 	"keep\\.google\\.com": {
-		send: (html) =>
-			html.replace(/<br>/g, "\n").replace(/&gt;/g, ">").replace(/&lt;/g, "<"),
-		receive: (md) => md.replace(/</g, "&lt;"),
+		send: (md) => {
+			debugger;
+			return md
+				.replace(/<br>/g, "\n")
+				.replace(/<a\s[^>]*href="([^"]*)"[^>]*>([^<]+)<\/a>/g, "$1")
+				.replace(/&gt;/g, ">")
+				.replace(/&lt;/g, "<");
+		},
+		receive: (md) => markdownToHtml(md).replace(/</g, "&lt;"),
 	},
 	// Gmail and Google Calendar.
 	"(mail|calendar)\\.google\\.com": {
