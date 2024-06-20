@@ -52,7 +52,7 @@ export default {
 				.replace(/&gt;/g, ">")
 				.replace(/&lt;/g, "<");
 		},
-		receive: (md) => markdownToHtml(md).replace(/</g, "&lt;"),
+		receive: (md) => md.replace(/</g, "&lt;"),
 	},
 	// Gmail and Google Calendar.
 	"(mail|calendar)\\.google\\.com": {
