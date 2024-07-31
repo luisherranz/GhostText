@@ -58,7 +58,15 @@ export default {
 	"(mail|calendar)\\.google\\.com": {
 		send: (html) => {
 			// Remove the initial empty line.
-			html = html.replace(/^<p><br><\/p>$/, "").replace(/^<br>$/, "");
+			html = html
+				.replace(/^<p><br><\/p>$/, "")
+				.replace(/^<br>$/, "")
+				.replace(
+					/<br clear="all"><div><div dir="ltr" class="gmail_signature" .*www.trainyourears.com<\/a><\/div><\/div><\/div><\/div><br>/,
+					'–<br><strong>TrainYourEars</strong><br><a href="https://www.trainyourears.com">www.trainyourears.com</a>'
+				);
+
+			debugger;
 
 			return htmlToMarkdown(html);
 		},
